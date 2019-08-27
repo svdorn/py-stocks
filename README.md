@@ -26,6 +26,9 @@ You should be good to go.
 
 * [Alphavantage](https://www.alphavantage.co)
 * [Keras](https://keras.io/)
+* [NumPy](https://numpy.org/)
+* [Pandas](https://pandas.pydata.org/)
+* [scikit-learn](https://scikit-learn.org/stable/)
 * [Tensorflow](https://www.tensorflow.org/)
 
 ## Deployment
