@@ -1,0 +1,16 @@
+name: py-stocks
+channels:
+  - !!python/unicode "defaults"
+dependencies:
+  - python=3.6
+  - pip==9.0.1
+  - numpy==1.12.0
+  - jupyter==1.0
+  - matplotlib==2.0.0
+  - scikit-learn==0.18.1
+  - scipy==0.19.0
+  - pandas==0.19.2
+  - pip:
+      - tensorflow==1.1.0
+      - keras==2.0.4
+      - alpha_vantage
