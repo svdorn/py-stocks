@@ -1,8 +1,10 @@
 import numpy as np
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
+from alpha_vantage.techindicators import TechIndicators
 import matplotlib.pyplot as plt
 import json
+from models import adam_regression
 
 def get_stock_data(x):
     """
@@ -12,16 +14,8 @@ def get_stock_data(x):
 def get_weekly_time_series(x):
     data, meta_data = ts.get_weekly(symbol=x)
 
-    plot_time_series(data, "4. close", "MSFT Time Series Weekly")
+    return data["4. close"]
 
-    return data, meta_data
-
-
-# Manage alphavantage calls to ensure that we aren't hitting the api limits
-def api_limits(x):
-    """
-    Get a specific stock data thing
-    """
 
 def plot_time_series(data, index, title):
     data[index].plot()
@@ -36,5 +30,12 @@ key = file.read().strip()
 file.close()
 
 ts = TimeSeries(key=key, output_format='pandas', indexing_type='date')
+ti = TechIndicators(key=key, output_format='pandas', indexing_type='date')
 
-get_weekly_time_series("MSFT")
+msft_y_data = get_weekly_time_series("MSFT")
+data, meta_data = ti.get_sma(symbol="MSFT", interval="weekly")
+msft_x_data = data["SMA"]
+
+# make sure the data's dates match up
+
+adam_regression(msft_x_data, msft_y_data)
