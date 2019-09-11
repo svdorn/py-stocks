@@ -14,7 +14,7 @@ conda env create
 ```
 Activate the environment
 ```
-source activate py-stocks
+conda activate py-stocks
 ```
 You should be good to go.
 
@@ -39,7 +39,7 @@ N/A yet
 
 Activate the environment
 ```
-source activate py-stocks
+conda activate py-stocks
 ```
 Deactivate the environment when done
 ```
