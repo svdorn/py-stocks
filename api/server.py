@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
 from alpha_vantage.techindicators import TechIndicators
-import matplotlib.pyplot as plt
 import json
 from models import adam_regression
 
@@ -14,15 +13,15 @@ def get_stock_data(x):
 def get_weekly_time_series(x):
     data, meta_data = ts.get_weekly(symbol=x)
 
-    return data["4. close"]
+    return data
 
+def get_sma_data(x):
+    y_train, y_train_metadata = ts.get_weekly(symbol=x)
+    x_train, x_train_metadata = ti.get_sma(symbol=x, interval='weekly')
+    # merge the data so that the dates match up
+    data = pd.merge(x_train, y_train, how='inner', left_index=True, right_index=True)
 
-def plot_time_series(data, index, title):
-    data[index].plot()
-    plt.title(title)
-    plt.show()
-
-    return 0
+    return data
 
 # Read in credentials for making an alphavantage call
 file = open('credentials.txt', 'r')
@@ -32,10 +31,6 @@ file.close()
 ts = TimeSeries(key=key, output_format='pandas', indexing_type='date')
 ti = TechIndicators(key=key, output_format='pandas', indexing_type='date')
 
-msft_y_data = get_weekly_time_series("MSFT")
-data, meta_data = ti.get_sma(symbol="MSFT", interval="weekly")
-msft_x_data = data["SMA"]
+data = get_sma_data(x="MSFT")
 
-# make sure the data's dates match up
-
-adam_regression(msft_x_data, msft_y_data)
+adam_regression(data['SMA'], data['4. close'])

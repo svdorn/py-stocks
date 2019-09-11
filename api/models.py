@@ -12,19 +12,17 @@ def adam_regression(x_train, y_train):
 
     model = Sequential()
 
-    model.add(Dense(28, activation='relu', input_shape=(28,)))
-    model.add(Dense(28, activation='relu'))
-    model.add(Dense(4))
-    print("compiling")
+    model.add(Dense(1, activation='relu', input_shape=(1,)))
+    model.add(Dense(4, activation='relu'))
+    model.add(Dense(1))
+    print(x_train)
+    print(y_train)
 
     model.compile(Adam(lr=learning_rate), 'mean_squared_error')
 
-    print("fitting")
-    print(x_train)
-    print(y_train)
     model.fit(x_train, y_train, epochs=epochs)
 
-    print("predicting")
+    print(x_train)
     predictions = model.predict(x_train)
 
     print(predictions)
