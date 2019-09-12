@@ -16,8 +16,12 @@ def get_weekly_time_series(x):
     return data
 
 def get_sma_data(x):
-    y_train, y_train_metadata = ts.get_weekly(symbol=x)
-    x_train, x_train_metadata = ti.get_sma(symbol=x, interval='weekly')
+    # stock price weekly data
+    y_train, y_train_metadata = ts.get_daily(symbol=x, outputsize='full')
+    # technical indicator data
+    sma_train, sma_train_metadata = ti.get_sma(symbol=x, interval='daily')
+    bbands_train, bbands_train_metadata = ti.get_bbands(symbol=x, interval='daily')
+    x_train = pd.merge(sma_train, bbands_train, how='inner', left_index=True, right_index=True)
     # merge the data so that the dates match up
     data = pd.merge(x_train, y_train, how='inner', left_index=True, right_index=True)
 
@@ -31,6 +35,6 @@ file.close()
 ts = TimeSeries(key=key, output_format='pandas', indexing_type='date')
 ti = TechIndicators(key=key, output_format='pandas', indexing_type='date')
 
-data = get_sma_data(x="MSFT")
+data = get_sma_data(x="AAPL")
 
-adam_regression(data['SMA'], data['4. close'])
+adam_regression(pd.DataFrame(data, columns=['SMA', 'Real Lower Band', 'Real Middle Band', 'Real Upper Band']).values, data['4. close'].values)
